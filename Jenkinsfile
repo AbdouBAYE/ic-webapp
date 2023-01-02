@@ -7,7 +7,7 @@ pipeline {
        IMAGE_NAME = "ic-webapp"
        IMAGE_TAG = "v1"
        INTERNAL_PORT = "8080"
-       EXTERNAL_PORT = "8080"
+       EXTERNAL_PORT = "8090"
        
      }
      agent none
