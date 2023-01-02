@@ -21,6 +21,23 @@ pipeline {
                 }
              }
         }
+          
+      stage('Scan Image with  SNYK') {
+            agent any
+            environment{
+                SNYK_TOKEN = credentials('SNYK_TOKEN')
+            }
+            steps {
+                script{
+                    sh '''
+                    echo "Starting Image scan ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG ..." 
+                    echo There is Scan result : 
+                    SCAN_RESULT=$(docker run --rm -e SNYK_TOKEN=$SNYK_TOKEN -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/app snyk/snyk:docker snyk test --docker $ID_DOCKER/$IMAGE_NAME:$IMAGE_TAG --json ||  if [[ $? -gt "1" ]];then echo -e "Warning, you must see scan result \n" ;  false; elif [[ $? -eq "0" ]]; then   echo "PASS : Nothing to Do"; elif [[ $? -eq "1" ]]; then   echo "Warning, passing with something to do";  else false; fi)
+                    echo "Scan ended"
+                    '''
+                }
+            }
+        }          
        
         stage('Run container based on builded image') {
             agent any
