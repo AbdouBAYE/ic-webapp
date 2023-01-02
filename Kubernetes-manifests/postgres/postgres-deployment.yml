@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+    env: prod
+  namespace: ic-webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:13
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+          - mountPath: /var/lib/postgresql/data/pgdata
+            name: postgres-data
+        env:
+          - name: POSTGRES_DB
+            value: postgres
+          - name: POSTGRES_USER
+            value: odoo
+          - name: PGDATA
+            value: /var/lib/postgresql/data/pgdata
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: postgres_password
+      volumes:
+      - name: postgres-data
+        hostPath:
+          path: /data/ic-webapp/postgres
+          type: Directory

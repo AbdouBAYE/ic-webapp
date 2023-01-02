@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin
+  labels:
+    app: pgadmin
+    env: prod
+  namespace: ic-webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgadmin
+  template:
+    metadata:
+      labels:
+        app: pgadmin
+    spec:
+      containers:
+      - name: pgadmin
+        image: dpage/pgadmin4
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - mountPath: /var/lib/pgadmin
+            name: pgadmin-data
+          - mountPath: /pgadmin4/servers.json
+            subPath: servers.json
+            name: config-maps
+        env:
+          - name: PGADMIN_DEFAULT_EMAIL
+            value: abdou@domain.com
+          - name: PGADMIN_DEFAULT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pgadmin-secret
+                key: pgadmin_default_password
+      volumes:
+      - name: config-maps
+        configMap:
+          name: pgadmin-config
+          items:
+          - key: servers.json
+            path: servers.json
+      - name: pgadmin-data
+        persistentVolumeClaim:
+          claimName: pgadmin-pvc
