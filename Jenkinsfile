@@ -8,8 +8,7 @@ pipeline {
        IMAGE_TAG = "v1"
        INTERNAL_PORT = "8080"
        EXTERNAL_PORT = "8080"
-       CONTAINER_IMAGE = "${ID_DOCKER}/${IMAGE_NAME}:${IMAGE_TAG}"
-
+       
      }
      agent none
      stages {
