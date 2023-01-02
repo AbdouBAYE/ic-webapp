@@ -57,7 +57,7 @@ pipeline {
            steps {
               script {
                 sh '''
-                    curl http://172.17.0.1:${EXTERNAL_PORT} | grep -i "200"
+                    curl -I http://172.17.0.1:${EXTERNAL_PORT} | grep -i "200"
                 '''
               }
            }
