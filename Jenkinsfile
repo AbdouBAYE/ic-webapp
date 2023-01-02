@@ -16,7 +16,7 @@ pipeline {
              agent any
              steps {
                 script {
-                  sh 'docker build -t ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG -f ./ic-webapp/app/Dockerfile ./ic-webapp/app'
+                  sh 'docker build -t ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG -f ./app/Dockerfile ./app'
                 }
              }
         }
