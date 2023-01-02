@@ -31,7 +31,7 @@ pipeline {
                     sh '''
                     echo "Starting Image scan ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG ..." 
                     echo There is Scan result : 
-                    docker run --rm -it -e SNYK_TOKEN=$SNYK_TOKEN -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/app snyk/snyk:docker snyk test --docker $ID_DOCKER/$IMAGE_NAME:$IMAGE_TAG --json
+                    docker run --rm -it -e SNYK_TOKEN=$SNYK_TOKEN -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/app snyk/snyk:docker snyk test --docker $ID_DOCKER/$IMAGE_NAME:$IMAGE_TAG
                     echo "Scan ended"
                     '''
                 }
