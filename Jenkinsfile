@@ -17,7 +17,7 @@ pipeline {
              agent any
              steps {
                 script {
-                  sh 'docker build -t ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG .'
+                  sh 'docker build -t ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG -f ./Docker-ressources/Dockerfile'
                 }
              }
         }
@@ -27,8 +27,8 @@ pipeline {
             steps {
                script {
                  sh '''
-                    echo "Clean Environment"
-                    docker rm -f $IMAGE_NAME || echo "container does not exist"
+                    echo "Cleaning existing container if exist"
+                    docker ps -a | grep -i $IMAGE_NAME && docker rm -f ${IMAGE_NAME}
                     docker run --name $IMAGE_NAME -d -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG
                     sleep 5
                  '''
