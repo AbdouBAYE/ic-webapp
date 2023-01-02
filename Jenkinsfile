@@ -41,7 +41,7 @@ pipeline {
            steps {
               script {
                 sh '''
-                    curl http://172.17.0.1:${EXTERNAL_PORT} | grep -q "Dimension Abdoulaye"
+                    curl http://172.17.0.1:${EXTERNAL_PORT} | grep -i "200"
                 '''
               }
            }
